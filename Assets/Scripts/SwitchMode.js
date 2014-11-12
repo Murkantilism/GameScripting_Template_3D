@@ -5,9 +5,12 @@ var firstPersonCamera : Camera;
 
 var gameMode : boolean = true;
 
+var player : GameObject;
+
 function Start () {
 	thirdPersonCamera.enabled = true;
 	firstPersonCamera.enabled = false;
+	player = GameObject.Find("First Person Controller");
 }
 
 function Update () {
@@ -20,18 +23,20 @@ function Update () {
 		if(gameMode == true){
 			thirdPersonCamera.enabled = true;
 			firstPersonCamera.enabled = false;
-			//mainCamera.transform.position = new Vector3(0, 2, -2.75);
-			//mainCamera.transform.localEulerAngles = new Vector3(15, 0, 0);
 		// If the gameMode bool is false, set camera to 1st person view (default)
 		}else{
 			thirdPersonCamera.enabled = false;
 			firstPersonCamera.enabled = true;
-			//mainCamera.transform.position = new Vector3(0, 0, 0);
-			//mainCamera.transform.localEulerAngles = new Vector3(0, 0, 0);
+
 		}
 	}catch (UnityException){
 		if(thirdPersonCamera == null || firstPersonCamera == null){
 			Debug.Log("ERROR: Need to assign camera(s) via inspector");
 		}
+	}
+	
+	// If we are in 1st person view, and the player hits F, fire the "pinball"
+	if(gameMode == false && Input.GetKeyUp(KeyCode.F)){
+		player.SendMessage("FirePinball");
 	}
 }

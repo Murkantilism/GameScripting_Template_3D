@@ -14,11 +14,13 @@ function Build() {
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.renderer.material.color = Color.gray;
         cube.transform.position = hit.transform.position + hit.normal;
+        cube.gameObject.tag = "BuiltCube";
+        cube.collider.material = Resources.Load("Bouncy") as PhysicMaterial;
     }
 }
 
 function Erase() {
-    if (HitBlock())
+    if (HitBlock() && (hit.transform.gameObject.tag == "BuiltCube"))
         Destroy(hit.transform.gameObject);
 }
 
