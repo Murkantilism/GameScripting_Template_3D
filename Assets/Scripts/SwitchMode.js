@@ -23,6 +23,7 @@ function Update () {
 		if(gameMode == true){
 			thirdPersonCamera.enabled = true;
 			firstPersonCamera.enabled = false;
+			player.SendMessage("StopPinball", false);
 		// If the gameMode bool is false, set camera to 1st person view (default)
 		}else{
 			thirdPersonCamera.enabled = false;
@@ -37,6 +38,6 @@ function Update () {
 	
 	// If we are in 1st person view, and the player hits F, fire the "pinball"
 	if(gameMode == false && Input.GetKeyUp(KeyCode.F)){
-		player.SendMessage("FirePinball");
+		player.SendMessage("FirePinball", true);
 	}
 }

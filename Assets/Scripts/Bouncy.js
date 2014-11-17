@@ -6,39 +6,44 @@ var gravity : float = 20.0f;
 var moveDirection : Vector3 = Vector3.zero;
 var bounce : Vector3 = Vector3.zero;
 var controller : CharacterController;
-var fireSpeed : float = 10.0f;
+var fireSpeed : float = 20.0f;
 var ballFired : boolean = false;
+var forceVector = Vector3.zero;
+var pinballModep = false;
 
 function Start () {
 	controller = gameObject.GetComponent(CharacterController);
 }
 
 function Update () {
-	if(controller.isGrounded){
-		if(bounce.sqrMagnitude > 0){
-			moveDirection = bounce;
-			bounce = Vector3.zero;
-		}else{
-			moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-			
-			if(ballFired == true){
-				//gameObject.rigidbody.AddForce(Vector3.right * fireSpeed, ForceMode.Impulse);
-				moveDirection = transform.TransformDirection(Vector3.forward * fireSpeed);
-				ballFired = false;
+	if(pinballModep == false){
+		if(controller.isGrounded){
+			if(bounce.sqrMagnitude > 0){
+				moveDirection = bounce;
+				bounce = Vector3.zero;
 			}else{
+				moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+				
 				moveDirection = transform.TransformDirection(moveDirection);
+							
+				moveDirection *= speed;
 			}
-						
-			moveDirection *= speed;
+			
+			if(Input.GetKeyUp(KeyCode.Space)){
+				moveDirection.y = jumpSpeed;
+			}
 		}
 		
-		if(Input.GetKeyUp(KeyCode.Space)){
-			moveDirection.y = jumpSpeed;
+		moveDirection.y -= gravity * Time.deltaTime;
+		controller.Move(moveDirection * Time.deltaTime);
+	}else if(pinballModep == true){
+		if(ballFired == true){
+			gameObject.rigidbody.AddForce(new Vector3(1, 0, 1) * fireSpeed, ForceMode.Impulse);
+			ballFired = false;
+		}else{
+			gameObject.rigidbody.velocity = new Vector3(1, 0, 1) * -fireSpeed;
 		}
 	}
-	
-	moveDirection.y -= gravity * Time.deltaTime;
-	controller.Move(moveDirection * Time.deltaTime);
 }
 
 function OnControllerColliderHit(col : ControllerColliderHit){
@@ -52,6 +57,12 @@ function OnControllerColliderHit(col : ControllerColliderHit){
 	}
 }
 
-function FirePinball(){
+function FirePinball(mode : boolean){
 	ballFired = true;
+	pinballModep = mode;
+}
+
+function StopPinball(mode : boolean){
+	ballFired = false;
+	pinballModep = mode;
 }
