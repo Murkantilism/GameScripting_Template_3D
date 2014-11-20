@@ -10,13 +10,17 @@ var fireSpeed : float = 20.0f;
 var ballFired : boolean = false;
 var forceVector = Vector3.zero;
 var pinballModep = false;
+var motor : CharacterMotor;
 
 function Start () {
 	controller = gameObject.GetComponent(CharacterController);
+	motor = gameObject.GetComponent(CharacterMotor);
 }
 
 function Update () {
 	if(pinballModep == false){
+	    controller.enabled = true;
+	    motor.enabled = true;
 		if(controller.isGrounded){
 			if(bounce.sqrMagnitude > 0){
 				moveDirection = bounce;
@@ -37,11 +41,14 @@ function Update () {
 		moveDirection.y -= gravity * Time.deltaTime;
 		controller.Move(moveDirection * Time.deltaTime);
 	}else if(pinballModep == true){
+		controller.enabled = false;
+	    motor.enabled = false;
 		if(ballFired == true){
-			gameObject.rigidbody.AddForce(new Vector3(1, 0, 1) * fireSpeed, ForceMode.Impulse);
+			//gameObject.rigidbody.AddForce(new Vector3(1, 0, 1) * fireSpeed, ForceMode.Impulse);
+			gameObject.rigidbody.AddRelativeForce(0, 10, 10);
 			ballFired = false;
 		}else{
-			gameObject.rigidbody.velocity = new Vector3(1, 0, 1) * -fireSpeed;
+			//gameObject.rigidbody.velocity = new Vector3(1, 0, 1) * -fireSpeed;
 		}
 	}
 }
