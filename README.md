@@ -3,6 +3,13 @@ GameScripting_Template_2D
 
 A template of a 3D pinball game implemented in Unity for student use in Northeastern Universities Game Scripting class.
 
+HowTo
+=========================
+
+M key to switch Modes (1st person to 3rd person)
+F key to Fire "pinball" (your character)
+Note: Switching to 3rd person after firing the pinball will reset physics, character will fall to the ground.
+
 Credits
 =========================
 Credit to Unity Answers user "Statement" for the Mcpackage unity package:
