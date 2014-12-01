@@ -2,6 +2,12 @@ var blockLayer : LayerMask = 1;
 var range : float = Mathf.Infinity;
 var hit : RaycastHit;
 
+var firstPersonCamera : GameObject;
+
+function Start () {
+    firstPersonCamera = GameObject.Find("1st Person Camera");
+}
+
 function Update () {
     if (Input.GetMouseButtonDown(0))
         Build();
@@ -11,11 +17,10 @@ function Update () {
 
 function Build() {
     if (HitBlock()) {
-        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.renderer.material.color = Color.gray;
-        cube.transform.position = hit.transform.position + hit.normal;
-        cube.gameObject.tag = "BuiltCube";
-        cube.collider.material = Resources.Load("Bouncy") as PhysicMaterial;
+        var bumper = Instantiate(Resources.Load("bumper_circle01"), hit.transform.position + hit.normal, Quaternion.identity);
+        bumper.renderer.material.color = Color.gray;
+        bumper.gameObject.tag = "BuiltCube";
+        bumper.collider.material = Resources.Load("Bouncy") as PhysicMaterial;
     }
 }
 
