@@ -12,6 +12,8 @@ function Update () {
     if (Input.GetMouseButtonDown(0))
         Build();
     if (Input.GetMouseButtonDown(1))
+        Build_alternate();
+    if (Input.GetMouseButtonDown(2))
         Erase();
 }
 
@@ -21,6 +23,15 @@ function Build() {
         bumper.renderer.material.color = Color.gray;
         bumper.gameObject.tag = "BuiltCube";
         bumper.collider.material = Resources.Load("Bouncy") as PhysicMaterial;
+    }
+}
+
+function Build_alternate() {
+    if (HitBlock()) {
+        var bumper = Instantiate(Resources.Load("bumper_triangle01"), hit.transform.position + hit.normal, Quaternion.identity);
+        bumper.renderer.material.color = Color.gray;
+        bumper.gameObject.tag = "BuiltCube";
+        bumper.collider.material = Resources.Load("SlightlyLessBouncy") as PhysicMaterial;
     }
 }
 
